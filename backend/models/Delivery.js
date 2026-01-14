@@ -1,21 +1,32 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../db');
-const Invoice = require('./Invoice');
+module.exports = (sequelize, DataTypes) => {
+  const Delivery = sequelize.define('Delivery', {
+    delivery_id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    invoice_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.ENUM('Poslana','U tranzitu','Dostavljena','Vraca se'),
+    },
+    last_action: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+  }, {
+    tableName: 'delivery',
+    timestamps: false,
+  });
 
-const Delivery = sequelize.define('Delivery', {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  invoiceId: { 
-    type: DataTypes.INTEGER, 
-    allowNull: false, 
-    references: { model: Invoice, key: 'id' }
-  },
-  status: { 
-    type: DataTypes.ENUM('Poslana','U tranzitu','Dostavljena','Vraca')
-  },
-  lastAction: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
-}, {
-  tableName: 'dostava',
-  timestamps: false
-});
+  Delivery.associate = (models) => {
+    Delivery.belongsTo(models.Invoice, {
+      foreignKey: 'invoice_id',
+      as: 'Invoice',
+    });
+  };
 
-module.exports = Delivery;
+  return Delivery;
+};

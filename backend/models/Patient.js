@@ -1,19 +1,41 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../db');
+module.exports = (sequelize, DataTypes) => {
+  const Patient = sequelize.define('Patient', {
+    patient_id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    first_name: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    last_name: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    oib: {
+      type: DataTypes.STRING(11),
+      allowNull: false,
+      unique: true,
+    },
+    address: DataTypes.STRING(100),
+    city: DataTypes.STRING(50),
+    postal_code: DataTypes.STRING(10),
+    created_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+  }, {
+    tableName: 'patient',
+    timestamps: false,
+  });
 
-const Patient = sequelize.define('Patient', {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  firstName: { type: DataTypes.STRING(50), allowNull: false },
-  lastName: { type: DataTypes.STRING(50), allowNull: false },
-  oib: { type: DataTypes.STRING(11), allowNull: false, unique: true },
-  address: { type: DataTypes.STRING(100) },
-  city: { type: DataTypes.STRING(50) },
-  postalCode: { type: DataTypes.STRING(10) },
-}, {
-  tableName: 'pacijenti',
-  timestamps: true,
-  createdAt: 'kreirano',
-  updatedAt: false,
-});
+  Patient.associate = (models) => {
+    Patient.hasMany(models.Invoice, {
+      foreignKey: 'patient_id',
+      as: 'Invoices',
+    });
+  };
 
-module.exports = Patient;
+  return Patient;
+};

@@ -1,22 +1,39 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../db');
-const Invoice = require('./Invoice');
+module.exports = (sequelize, DataTypes) => {
+  const ActivityHistory = sequelize.define('ActivityHistory', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    invoice_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    sent_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    sent_method: {
+      type: DataTypes.ENUM('Mail','SMS','Posta'),
+    },
+    action: {
+      type: DataTypes.STRING(100),
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+  }, {
+    tableName: 'ActivityHistory',
+    timestamps: false,
+  });
 
-const ActivityHistory = sequelize.define('ActivityHistory', {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  invoiceId: { 
-    type: DataTypes.INTEGER, 
-    allowNull: false, 
-    references: { model: Invoice, key: 'id' }
-  },
-  sendDate: { type: DataTypes.DATE, allowNull: false },
-  method: { type: DataTypes.ENUM('Mail','SMS','Posta'), allowNull: false },
-  action: { type: DataTypes.STRING(100) }
-}, {
-  tableName: 'povijest_aktivnosti',
-  timestamps: true,
-  createdAt: 'kreirano',
-  updatedAt: false,
-});
+  ActivityHistory.associate = (models) => {
+    ActivityHistory.belongsTo(models.Invoice, {
+      foreignKey: 'invoice_id',
+      as: 'Invoice',
+    });
+  };
 
-module.exports = ActivityHistory;
+  return ActivityHistory;
+};
