@@ -35,7 +35,7 @@ router.put('/updateDelivery/:delivery_id', deliveryController.updateDelivery);
 router.delete('/deleteDelivery/:delivery_id', deliveryController.deleteDelivery);
 
 // INVOICES
-router.post('/createInvoice/create', invoiceController.createInvoice);
+router.post('/createInvoice', invoiceController.createInvoice);
 router.get('/getAllInvoices', invoiceController.getAllInvoices);
 router.get('/getInvoiceById/:invoice_id', invoiceController.getInvoiceById);
 router.put('/updateInvoice/:invoice_id', invoiceController.updateInvoice);
