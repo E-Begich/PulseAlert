@@ -43,6 +43,74 @@ const seed = async () => {
     );
 
     console.log('10 pacijenata uspješno uneseno!');
+
+      const hashedPassword = await bcrypt.hash('password123', 10);
+
+    await User.bulkCreate(
+      [
+        {
+          first_name: 'Admin',
+          last_name: 'User',
+          username: 'admin',
+          email: 'admin@pulsealert.hr',
+          password: hashedPassword,
+          role: 'admin',
+        },
+        {
+          first_name: 'Ivana',
+          last_name: 'Horvat',
+          username: 'ivana.h',
+          email: 'ivana@pulsealert.hr',
+          password: hashedPassword,
+          role: 'sluzbenik',
+        },
+        {
+          first_name: 'Marko',
+          last_name: 'Perić',
+          username: 'marko.p',
+          email: 'marko@pulsealert.hr',
+          password: hashedPassword,
+          role: 'sluzbenik',
+        },
+        {
+          first_name: 'Ana',
+          last_name: 'Kovač',
+          username: 'ana.k',
+          email: 'ana@pulsealert.hr',
+          password: hashedPassword,
+          role: 'sluzbenik',
+        },
+        {
+          first_name: 'Petar',
+          last_name: 'Babić',
+          username: 'petar.b',
+          email: 'petar@pulsealert.hr',
+          password: hashedPassword,
+          role: 'sluzbenik',
+        },
+        {
+          first_name: 'Luka',
+          last_name: 'Radić',
+          username: 'luka.r',
+          email: 'luka@pulsealert.hr',
+          password: hashedPassword,
+          role: 'sluzbenik',
+        },
+        {
+          first_name: 'Maja',
+          last_name: 'Jurić',
+          username: 'maja.j',
+          email: 'maja@pulsealert.hr',
+          password: hashedPassword,
+          role: 'sluzbenik',
+        },
+      ],
+      { ignoreDuplicates: true }
+    );
+
+    console.log('7 korisnika uspješno uneseno');
+
+
     process.exit(0);
   } catch (err) {
     console.error('Greška kod seeda:', err);
