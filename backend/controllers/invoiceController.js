@@ -1,9 +1,30 @@
 const { Invoice, Patient, User, Payment, ActivityHistory, Document, Delivery } = require('../models');
 
-// 1. Kreiraj novu fakturu
+// Funkcija za automatsko generiranje broja računa
+const generateInvoiceNumber = async () => {
+  const year = new Date().getFullYear();
+
+  // Dohvati zadnji invoice iz tekuće godine
+  const lastInvoice = await Invoice.findOne({
+    where: db.Sequelize.where(
+      db.Sequelize.fn('YEAR', db.Sequelize.col('issue_date')),
+      year
+    ),
+    order: [['invoice_id', 'DESC']]
+  });
+
+  const nextId = lastInvoice ? lastInvoice.invoice_id + 1 : 1;
+
+  return `INV-${year}-${String(nextId).padStart(4, '0')}`;
+};
+
+
 const createInvoice = async (req, res) => {
   try {
-    const { patient_id, invoice_number, amount_due, issue_date, due_date, payment_status, reminder_sent, created_by } = req.body;
+    const { patient_id, amount_due, issue_date, due_date, payment_status, reminder_sent, created_by } = req.body;
+
+    // Ako korisnik nije poslao broj računa, generiraj ga automatski
+    const invoice_number = req.body.invoice_number || await generateInvoiceNumber();
 
     const invoice = await Invoice.create({
       patient_id,
@@ -23,6 +44,7 @@ const createInvoice = async (req, res) => {
     res.status(500).json({ error: 'Greška na serveru' });
   }
 };
+
 
 // 2. Dohvati sve fakture
 const getAllInvoices = async (req, res) => {

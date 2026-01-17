@@ -1,6 +1,6 @@
 // seedInitialData.js
 const bcrypt = require('bcrypt');
-const { Patient, User, AuditLog, Delivery } = require('./models');
+const { Patient, User, AuditLog, Invoice, Delivery, sequelize } = require('./models');
 
 const seed = async () => {
   try {
@@ -83,6 +83,39 @@ const seed = async () => {
     ]);
 
     console.log('Audit logovi uneseni!');
+
+        // ----- FACTURE (Invoice) -----
+    const patients = await Patient.findAll({ limit: 5 });
+    const users = await User.findAll({ limit: 2 });
+
+    const generateInvoiceNumber = async () => {
+      const year = new Date().getFullYear();
+      const lastInvoice = await Invoice.findOne({
+        where: sequelize.where(sequelize.fn('YEAR', sequelize.col('issue_date')), year),
+        order: [['invoice_id', 'DESC']],
+      });
+      const nextId = lastInvoice ? lastInvoice.invoice_id + 1 : 1;
+      return `INV-${year}-${String(nextId).padStart(4, '0')}`;
+    };
+
+    const invoicesData = [];
+    for (let i = 0; i < patients.length; i++) {
+      const invoice_number = await generateInvoiceNumber();
+      invoicesData.push({
+        patient_id: patients[i].patient_id,
+        invoice_number,
+        amount_due: (Math.random() * 1000 + 100).toFixed(2),
+        issue_date: new Date(),
+        due_date: new Date(new Date().setDate(new Date().getDate() + 30)),
+        payment_status: 'Na cekanju',
+        reminder_sent: false,
+        created_by: users[i % users.length].user_id,
+        created_at: new Date(),
+      });
+    }
+
+    await Invoice.bulkCreate(invoicesData, { ignoreDuplicates: true });
+    console.log(`${invoicesData.length} račun uspješno kreiran!`);
 
        /*    await Delivery.bulkCreate([
       { delivery_id: 1, action: 'Kreiran prvi pacijent' },

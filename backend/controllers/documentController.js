@@ -57,8 +57,8 @@ const getDocumentById = async (req, res) => {
 // 4. Update dokumenta
 const updateDocument = async (req, res) => {
   try {
-    const id = req.params.id;
-    const [updated] = await Document.update(req.body, { where: { document_id: id } });
+    const document_id = req.params.document_id;
+    const [updated] = await Document.update(req.body, { where: { document_id: document_id } });
 
     if (!updated) return res.status(404).json({ message: 'Dokument nije pronađen' });
 
@@ -72,8 +72,8 @@ const updateDocument = async (req, res) => {
 // 5. Delete dokumenta
 const deleteDocument = async (req, res) => {
   try {
-    const id = req.params.id;
-    const deleted = await Document.destroy({ where: { document_id: id } });
+    const document_id = req.params.document_id;
+    const deleted = await Document.destroy({ where: { document_id: document_id } });
 
     if (!deleted) return res.status(404).json({ message: 'Dokument nije pronađen' });
 
