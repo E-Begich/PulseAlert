@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const patientController = require('../controllers/patientController');
 const userController = require('../controllers/userController');
+const auditController = require('../controllers/auditLogController');
+
 
 //PATIENT
 router.post('/createPatient', patientController.createPatient);
@@ -17,6 +19,8 @@ router.get('/getUserById/:user_id', userController.getUserById);
 router.put('/updateUser/:user_id', userController.updateUser);
 router.delete('/deleteUser/:user_id', userController.deleteUser);
 
-
+// AUDIT LOG
+router.get('/getAllAuditLogs', auditController.getAllAuditLogs);
+router.get('/getLogsByUser/:user_id', auditController.getLogsByUser)
 
 module.exports = router;

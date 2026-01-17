@@ -1,6 +1,6 @@
 // seedInitialData.js
 const bcrypt = require('bcrypt');
-const { Patient, User } = require('./models');
+const { Patient, User, AuditLog } = require('./models');
 
 const seed = async () => {
   try {
@@ -49,60 +49,25 @@ const seed = async () => {
     await User.bulkCreate(
       [
         {
-          first_name: 'Admin',
-          last_name: 'User',
-          username: 'admin',
-          email: 'admin@pulsealert.hr',
-          password: hashedPassword,
-          role: 'admin',
+          first_name: 'Admin', last_name: 'User', username: 'admin', email: 'admin@pulsealert.hr', password: hashedPassword, role: 'admin',
         },
         {
-          first_name: 'Ivana',
-          last_name: 'Horvat',
-          username: 'ivana.h',
-          email: 'ivana@pulsealert.hr',
-          password: hashedPassword,
-          role: 'sluzbenik',
+          first_name: 'Ivana', last_name: 'Horvat', username: 'ivana.h', email: 'ivana@pulsealert.hr', password: hashedPassword, role: 'sluzbenik',
         },
         {
-          first_name: 'Marko',
-          last_name: 'Perić',
-          username: 'marko.p',
-          email: 'marko@pulsealert.hr',
-          password: hashedPassword,
-          role: 'sluzbenik',
+          first_name: 'Marko', last_name: 'Perić', username: 'marko.p', email: 'marko@pulsealert.hr', password: hashedPassword, role: 'sluzbenik',
         },
         {
-          first_name: 'Ana',
-          last_name: 'Kovač',
-          username: 'ana.k',
-          email: 'ana@pulsealert.hr',
-          password: hashedPassword,
-          role: 'sluzbenik',
+          first_name: 'Ana', last_name: 'Kovač', username: 'ana.k', email: 'ana@pulsealert.hr', password: hashedPassword, role: 'sluzbenik',
         },
         {
-          first_name: 'Petar',
-          last_name: 'Babić',
-          username: 'petar.b',
-          email: 'petar@pulsealert.hr',
-          password: hashedPassword,
-          role: 'sluzbenik',
+          first_name: 'Petar', last_name: 'Babić', username: 'petar.b', email: 'petar@pulsealert.hr', password: hashedPassword, role: 'sluzbenik',
         },
         {
-          first_name: 'Luka',
-          last_name: 'Radić',
-          username: 'luka.r',
-          email: 'luka@pulsealert.hr',
-          password: hashedPassword,
-          role: 'sluzbenik',
+          first_name: 'Luka', last_name: 'Radić', username: 'luka.r', email: 'luka@pulsealert.hr', password: hashedPassword, role: 'sluzbenik',
         },
         {
-          first_name: 'Maja',
-          last_name: 'Jurić',
-          username: 'maja.j',
-          email: 'maja@pulsealert.hr',
-          password: hashedPassword,
-          role: 'sluzbenik',
+          first_name: 'Maja', last_name: 'Jurić', username: 'maja.j', email: 'maja@pulsealert.hr', password: hashedPassword, role: 'sluzbenik',
         },
       ],
       { ignoreDuplicates: true }
@@ -110,6 +75,14 @@ const seed = async () => {
 
     console.log('7 korisnika uspješno uneseno');
 
+       await AuditLog.bulkCreate([
+      { user_id: 1, action: 'Kreiran prvi pacijent' },
+      { user_id: 1, action: 'Kreiran prvi korisnik' },
+      { user_id: 2, action: 'Prijava u sustav' },
+      { user_id: 3, action: 'Prijava u sustav' },
+    ]);
+
+    console.log('Audit logovi uneseni!');
 
     process.exit(0);
   } catch (err) {
