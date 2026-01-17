@@ -7,7 +7,8 @@ const seed = async () => {
     // ----- PACIJENTI -----
     await Patient.bulkCreate(
       [
-        {first_name: 'Ivan', last_name: 'Horvat', oib: '12345678901', address: 'Ilica 10', city: 'Zagreb', postal_code: '10000',
+        {
+          first_name: 'Ivan', last_name: 'Horvat', oib: '12345678901', address: 'Ilica 10', city: 'Zagreb', postal_code: '10000',
         },
         {
           first_name: 'Ana', last_name: 'Kovač', oib: '12345678902', address: 'Riva 5', city: 'Split', postal_code: '21000',
@@ -44,7 +45,7 @@ const seed = async () => {
 
     console.log('10 pacijenata uspješno uneseno!');
 
-      const hashedPassword = await bcrypt.hash('password123', 10);
+    const hashedPassword = await bcrypt.hash('password123', 10);
 
     await User.bulkCreate(
       [
@@ -75,7 +76,7 @@ const seed = async () => {
 
     console.log('7 korisnika uspješno uneseno');
 
-       await AuditLog.bulkCreate([
+    await AuditLog.bulkCreate([
       { user_id: 1, action: 'Kreiran prvi pacijent' },
       { user_id: 1, action: 'Kreiran prvi korisnik' },
       { user_id: 2, action: 'Prijava u sustav' },
@@ -84,26 +85,25 @@ const seed = async () => {
 
     console.log('Audit logovi uneseni!');
 
-        // ----- FACTURE (Invoice) -----
+    // ----- FACTURE (Invoice) -----
     const patients = await Patient.findAll({ limit: 5 });
     const users = await User.findAll({ limit: 2 });
 
-    const generateInvoiceNumber = async () => {
-      const year = new Date().getFullYear();
-      const lastInvoice = await Invoice.findOne({
-        where: sequelize.where(sequelize.fn('YEAR', sequelize.col('issue_date')), year),
-        order: [['invoice_id', 'DESC']],
-      });
-      const nextId = lastInvoice ? lastInvoice.invoice_id + 1 : 1;
-      return `INV-${year}-${String(nextId).padStart(4, '0')}`;
-    };
+    // --- dobavi zadnji invoice za trenutnu godinu ---
+    const year = new Date().getFullYear();
+    let lastInvoice = await Invoice.findOne({
+      where: sequelize.where(sequelize.fn('YEAR', sequelize.col('issue_date')), year),
+      order: [['invoice_id', 'DESC']],
+    });
 
+    let nextId = lastInvoice ? lastInvoice.invoice_id + 1 : 1;
+
+    // --- generiraj podatke za bulkCreate ---
     const invoicesData = [];
     for (let i = 0; i < patients.length; i++) {
-      const invoice_number = await generateInvoiceNumber();
       invoicesData.push({
         patient_id: patients[i].patient_id,
-        invoice_number,
+        invoice_number: `INV-${year}-${String(nextId).padStart(4, '0')}`,
         amount_due: (Math.random() * 1000 + 100).toFixed(2),
         issue_date: new Date(),
         due_date: new Date(new Date().setDate(new Date().getDate() + 30)),
@@ -112,19 +112,22 @@ const seed = async () => {
         created_by: users[i % users.length].user_id,
         created_at: new Date(),
       });
+
+      nextId++; // inkrementiraj lokalni brojač
     }
 
     await Invoice.bulkCreate(invoicesData, { ignoreDuplicates: true });
+
     console.log(`${invoicesData.length} račun uspješno kreiran!`);
 
-       /*    await Delivery.bulkCreate([
-      { delivery_id: 1, action: 'Kreiran prvi pacijent' },
-      { delivery_id: 2, action: 'Kreiran prvi korisnik' },
-      { delivery_id: 3, action: 'Prijava u sustav' },
-      { delivery_id: 4, action: 'Prijava u sustav' },
-    ]);
+    /*    await Delivery.bulkCreate([
+   { delivery_id: 1, action: 'Kreiran prvi pacijent' },
+   { delivery_id: 2, action: 'Kreiran prvi korisnik' },
+   { delivery_id: 3, action: 'Prijava u sustav' },
+   { delivery_id: 4, action: 'Prijava u sustav' },
+ ]);
 
-    console.log('Dostava unesena!'); */
+ console.log('Dostava unesena!'); */
 
     process.exit(0);
   } catch (err) {
