@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     amount_due: {
-      type: DataTypes.DECIMAL(10,2),
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
     issue_date: {
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     payment_status: {
-      type: DataTypes.ENUM('Na cekanju','Placeno','Kasni'),
+      type: DataTypes.ENUM('Na cekanju', 'Placeno', 'Kasni'),
       defaultValue: 'Na cekanju',
     },
     reminder_sent: {
@@ -51,9 +51,14 @@ module.exports = (sequelize, DataTypes) => {
       as: 'Patient',
     });
 
+    //dodana restrikcija da se korisnik ne može obrisati ako ima račun
     Invoice.belongsTo(models.User, {
-      foreignKey: 'created_by',
-      as: 'CreatedBy',
+      foreignKey: {
+        name: 'created_by',
+        allowNull: false
+      },
+      onDelete: 'RESTRICT',
+      as: 'CreatedBy'
     });
 
     Invoice.hasMany(models.Payment, {

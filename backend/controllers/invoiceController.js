@@ -1,5 +1,5 @@
 const db = require('../models');
-const { Invoice, Patient, User, Payment, ActivityHistory, Document, Delivery  } = db;
+const { Invoice, Patient, User, Payment, ActivityHistory, Document, Delivery } = db;
 
 // Funkcija za automatsko generiranje broja računa
 const generateInvoiceNumber = async () => {
@@ -23,9 +23,7 @@ const generateInvoiceNumber = async () => {
   return `INV-${year}-${String(nextNumber).padStart(4, '0')}`;
 };
 
-
 const createInvoice = async (req, res) => {
-  console.log('➡️ CREATE INVOICE HIT', req.body);
   try {
     const {
       patient_id,
@@ -36,6 +34,21 @@ const createInvoice = async (req, res) => {
       reminder_sent,
       created_by
     } = req.body;
+
+    //provjera korisnika i pacijenta
+    const user = await User.findByPk(created_by);
+    if (!user) {
+      return res.status(400).json({
+        message: 'Korisnik koji kreira račun ne postoji'
+      });
+    }
+
+    const patient = await Patient.findByPk(patient_id);
+    if (!patient) {
+      return res.status(400).json({
+        message: 'Pacijent ne postoji'
+      });
+    }
 
     const invoice_number =
       req.body.invoice_number || await generateInvoiceNumber();
