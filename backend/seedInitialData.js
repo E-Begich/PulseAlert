@@ -1,6 +1,6 @@
 // seedInitialData.js
 const bcrypt = require('bcrypt');
-const { Patient, User, AuditLog } = require('./models');
+const { Patient, User, AuditLog, Delivery } = require('./models');
 
 const seed = async () => {
   try {
@@ -83,6 +83,15 @@ const seed = async () => {
     ]);
 
     console.log('Audit logovi uneseni!');
+
+       /*    await Delivery.bulkCreate([
+      { delivery_id: 1, action: 'Kreiran prvi pacijent' },
+      { delivery_id: 2, action: 'Kreiran prvi korisnik' },
+      { delivery_id: 3, action: 'Prijava u sustav' },
+      { delivery_id: 4, action: 'Prijava u sustav' },
+    ]);
+
+    console.log('Dostava unesena!'); */
 
     process.exit(0);
   } catch (err) {
