@@ -34,7 +34,7 @@ export default function LoginPage() {
             <div className="absolute top-1/3 right-1/4 w-32 h-32 bg-blue-400 rounded-full blur-2xl opacity-30 animate-float" />
 
             {/* Card */}
-            <div className="relative w-[450px] bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-8 text-white">
+            <div className="relative w-[500px] bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-8 text-white">
 
                 {/* Logo */}
                 <div className="flex justify-center mb-6">
