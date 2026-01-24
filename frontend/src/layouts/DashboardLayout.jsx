@@ -8,12 +8,17 @@ export default function DashboardLayout({ children }) {
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-800 to-blue-900 relative">
+    <div className="min-h-screen relative bg-gradient-to-br from-[#FBFCFC] via-[#E3EBF3] to-[#D0DAE5]">
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-      <div className="relative flex flex-col md:ml-72 min-h-screen">
+
+      <div className="relative flex flex-col md:ml-72">
         <TopNavbar onMenuClick={toggleSidebar} />
-        <main className="flex-1 p-6">{children}</main>
+
+        <main className="flex-1 p-6">
+          {children}
+        </main>
       </div>
     </div>
   );
 }
+
