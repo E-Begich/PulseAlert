@@ -1,11 +1,13 @@
-const { User } = require('../models');
+const { User } = require("../models");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 // CREATE user
 exports.createUser = async (req, res) => {
   try {
     const user = await User.create(req.body);
     res.status(201).json({
-      message: 'Korisnik uspješno kreiran',
+      message: "Korisnik uspješno kreiran",
       user_id: user.user_id,
     });
   } catch (error) {
@@ -17,7 +19,7 @@ exports.createUser = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: { exclude: ['password'] }, // nikad ne vraćamo lozinku
+      attributes: { exclude: ["password"] },
     });
     res.json(users);
   } catch (error) {
@@ -29,11 +31,11 @@ exports.getAllUsers = async (req, res) => {
 exports.getUserById = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.user_id, {
-      attributes: { exclude: ['password'] },
+      attributes: { exclude: ["password"] },
     });
 
     if (!user) {
-      return res.status(404).json({ message: 'Korisnik nije pronađen' });
+      return res.status(404).json({ message: "Korisnik nije pronađen" });
     }
 
     res.json(user);
@@ -42,18 +44,17 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-
 // UPDATE user
 exports.updateUser = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.user_id);
 
     if (!user) {
-      return res.status(404).json({ message: 'Korisnik nije pronađen' });
+      return res.status(404).json({ message: "Korisnik nije pronađen" });
     }
 
     await user.update(req.body);
-    res.json({ message: 'Korisnik uspješno ažuriran' });
+    res.json({ message: "Korisnik uspješno ažuriran" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -65,12 +66,58 @@ exports.deleteUser = async (req, res) => {
     const user = await User.findByPk(req.params.user_id);
 
     if (!user) {
-      return res.status(404).json({ message: 'Korisnik nije pronađen' });
+      return res.status(404).json({ message: "Korisnik nije pronađen" });
     }
 
     await user.destroy();
-    res.json({ message: 'Korisnik obrisan' });
+    res.json({ message: "Korisnik obrisan" });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+////////////////////////////////////////////////////
+// 🔐 LOGIN
+////////////////////////////////////////////////////
+exports.loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Nedostaju podaci" });
+    }
+
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(404).json({ message: "Korisnik ne postoji" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Pogrešna lozinka" });
+    }
+
+    const token = jwt.sign(
+      {
+        id: user.user_id,
+        role: user.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.status(200).json({
+      token,
+      user: {
+        id: user.user_id,
+        name: user.name,
+        role: user.role,
+      },
+    });
+
+  } catch (error) {
+    console.error("LOGIN ERROR:", error);
+    res.status(500).json({ message: "Greška na serveru" });
   }
 };

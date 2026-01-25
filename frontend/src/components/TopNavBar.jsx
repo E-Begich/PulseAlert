@@ -2,7 +2,7 @@ import { Search, Bell, ChevronDown, Menu } from "lucide-react";
 
 export default function TopNavbar({ onMenuClick }) {
     return (
-        <header className="h-16 bg-gradient-to-b from-blue-700 to-[var(--main-bg-color)] flex items-center px-6 text-blue-900 shadow-md relative">
+        <header className="h-20 bg-gradient-to-b from-blue-700 to-[var(--main-bg-color)] flex items-center px-6 text-blue-900 shadow-md relative">
             {/* Mobile hamburger */}
             <button className="md:hidden mr-4" onClick={onMenuClick}>
                 <Menu />

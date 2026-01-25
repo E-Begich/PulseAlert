@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, AlertCircle } from "lucide-react";
 
 export default function LoginPage() {
@@ -8,23 +9,44 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
+    const navigate = useNavigate();
+
     const handleLogin = async () => {
         setError("");
         setLoading(true);
 
-        // fake delay (kasnije ide pravi API)
-        setTimeout(() => {
-            if (email !== "admin@pulsealert.hr" || password !== "password123") {
-                setError("Neispravni email ili lozinka");
-                setLoading(false);
-                return;
+        try {
+            const response = await fetch("http://localhost:5000/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Greška pri prijavi");
             }
 
-            // success (kasnije redirect)
-            console.log("LOGIN OK");
+            // 🔐 spremi token i usera
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
+
+            // ➡️ redirect na dashboard
+            navigate("/dashboard");
+
+        } catch (err) {
+            setError(err.message);
+        } finally {
             setLoading(false);
-        }, 1200);
+        }
     };
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-blue-700 relative overflow-hidden">

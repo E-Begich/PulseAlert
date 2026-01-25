@@ -26,6 +26,9 @@ router.get('/getUserById/:user_id', auth, userController.getUserById);
 router.put('/updateUser/:user_id', auth, userController.updateUser);
 router.delete('/deleteUser/:user_id', auth, userController.deleteUser);
 
+//login
+router.post('/login', userController.loginUser);
+
 // AUDIT LOG
 router.get('/getAllAuditLogs', auth, auditController.getAllAuditLogs);
 router.get('/getLogsByUser/:user_id', auth, auditController.getLogsByUser);
@@ -65,8 +68,7 @@ router.get('/getDocumentById/:id', auth, documentController.getDocumentById);
 router.put('/updateDocument/:id', auth, documentController.updateDocument);
 router.delete('/deleteDocument/:id', auth, documentController.deleteDocument);
 
-//login
-router.post('/login', login);
+
 
 
 module.exports = router;

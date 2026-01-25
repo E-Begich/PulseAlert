@@ -1,4 +1,5 @@
 import { Users, FileText, CreditCard, Bell, BarChart2, Settings } from "lucide-react";
+import Dashboard from "../pages/Dashboard";
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
   return (
@@ -20,7 +21,8 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
 
       {/* Navigation */}
       <nav className="p-4 space-y-2 mt-20">
-        <NavItem icon={<Users size={22} />} label="Pacijenti" active />
+        <NavItem icon={<Dashboard size={22} />} label="Početna" active />
+        <NavItem icon={<Users size={22} />} label="Pacijenti" />
         <NavItem icon={<FileText size={22} />} label="Računi" />
         <NavItem icon={<CreditCard size={22} />} label="Uplate" />
         <NavItem icon={<Bell size={22} />} label="Praćenje računa" />
