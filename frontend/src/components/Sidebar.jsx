@@ -1,7 +1,11 @@
-import { Users, FileText, CreditCard, Bell, BarChart2, Settings } from "lucide-react";
-import Dashboard from "../pages/Dashboard";
+import { Users, FileText, CreditCard, Bell, BarChart2, Settings, Home } from "lucide-react";
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
+
+  const userRaw = localStorage.getItem("user");
+  const user = userRaw ? JSON.parse(userRaw) : null;
+
+  const isAdmin = user?.role === "admin";
   return (
     <aside
       className={`
@@ -21,13 +25,18 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
 
       {/* Navigation */}
       <nav className="p-4 space-y-2 mt-20">
-        <NavItem icon={<Dashboard size={22} />} label="Početna" active />
-        <NavItem icon={<Users size={22} />} label="Pacijenti" />
+        <NavItem icon={<Home size={22} />} label="Početna" active/>
+
+        {isAdmin && (
+          <>
+            <NavItem icon={<Users size={22} />} label="Korisnici" />
+            <NavItem icon={<Settings size={22} />} label="Postavke" />
+          </>
+        )}
+
         <NavItem icon={<FileText size={22} />} label="Računi" />
         <NavItem icon={<CreditCard size={22} />} label="Uplate" />
-        <NavItem icon={<Bell size={22} />} label="Praćenje računa" />
         <NavItem icon={<BarChart2 size={22} />} label="Izvještaji" />
-        <NavItem icon={<Settings size={22} />} label="Postavke" />
       </nav>
 
       {/* Dugme X za zatvaranje sidebar-a */}
