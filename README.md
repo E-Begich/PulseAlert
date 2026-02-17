@@ -1,91 +1,67 @@
-# PulseAlert
-📖 Overview
+## 📖 Overview
 
 The PulseAlert – Hospital Alert Management System is a web application designed to digitalize, automate, and optimize patient alert and reminder management within healthcare environments.
-
 The system helps medical staff efficiently track patient-related alerts, manage reminders, and ensure timely response to important medical events.
 
-Key features include:
-
-Centralized patient alert management
-
-Automated reminders and notifications
-
-Secure authentication and protected routes
-
-Real-time monitoring of active alerts
-
-Structured data handling and validation
-
-Scalable architecture suitable for healthcare systems
+**Key features include:** 
+- Centralized patient alert management
+- Automated reminders and notifications
+- Secure authentication and protected routes
+- Real-time monitoring of active alerts
+- Structured data handling and validation
+- Scalable architecture suitable for healthcare systems
 
 The system improves workflow efficiency, reduces manual tracking, and enhances patient care responsiveness.
 
-📸 Screenshots
-Login	Dashboard	Alerts
+---
 
+## 📸 Screenshots
+| Login | Dashboard | Materials |
+|-------|-----------|-----------|
+| ![Login]() | ![Dashboard]() | ![Materials]() |
+
+| Suppliers | Offer / Quote | Invoice PDF |
+|-----------|---------------|-------------|
+| ![Suppliers]() | ![Offer]() | ![Invoice PDF]() |
+
+---
 	
-	
-Patients	Alert Details	Reminder Management
+## ⚙️ Technologies
+- **Frontend:** `React` + `React Router` + `TailwindCSS`  
+- **Backend:** `Node.js` + `Express`  
+- **Database:** `MySQL` via `Sequelize ORM`  
+- **Authentication:** `JWT (JSON Web Tokens)`  
+- **Security:** `bcrypt` for password hashing  
+- **Other:** `dotenv` for environment variables  
 
-	
-	
-⚙️ Technologies
+## 🛠 Features
+- **Secure authentication and authorization**  
+- **Patient alert creation and tracking**  
+- **Automated reminder management**  
+- **CRUD operations** for alerts and patient records  
+- **Data validation** to maintain medical data integrity  
+- **Protected API routes**  
+- **Scalable modular backend architecture**  
 
-Frontend: React + React Router + TailwindCSS
+## 🏗 System Architecture
+- Frontend communicates with backend via REST API
+- Backend handles authentication, business logic, and alert processing
+- Database stores patient data, alerts, and reminders
+- Sequelize ORM manages database interaction
+- Modular design allows independent frontend and backend development
 
-Backend: Node.js + Express
+## 💻 Installation (Local)
+ Configure database credentials before running the project.
 
-Database: MySQL via Sequelize ORM
+### 1️⃣ Clone the repository
+- git clone <your-repository-url>
 
-Authentication: JWT (JSON Web Tokens)
+### 2️⃣ Install backend dependencies
+- cd backend
+- npm install
 
-Security: bcrypt password hashing
-
-Other: dotenv environment configuration
-
-🛠 Features
-
-Secure user authentication and authorization
-
-Patient alert creation and tracking
-
-Automated reminder management
-
-CRUD operations for alerts and patient records
-
-Data validation for medical data integrity
-
-Protected API routes
-
-Scalable modular backend structure
-
-🏗 System Architecture
-
-Frontend communicates with backend via REST API
-
-Backend handles authentication, business logic, and alert processing
-
-Database stores patient data, alerts, and reminders
-
-Sequelize ORM manages database interaction
-
-Modular design allows independent frontend and backend development
-
-💻 Installation (Local)
-
-Configure database credentials before running the project.
-
-1️⃣ Clone the repository
-git clone <your-repository-url>
-
-2️⃣ Install backend dependencies
-cd backend
-npm install
-
-3️⃣ Configure environment variables
-
-Create a .env file inside the backend folder:
+### 3️⃣ Configure environment variables
+- Create a .env file inside the backend folder:
 
 DB_HOST=your_host
 DB_USER=your_user
@@ -95,26 +71,26 @@ DB_PORT=3306
 PORT=8080
 JWT_SECRET=your_secret_key
 
-4️⃣ Seed initial data (optional)
-npm run seed
+### 4️⃣ Seed initial data (optional)
+- npm run seed
 
-5️⃣ Start backend server
-npm run dev
+### 5️⃣ Start backend server
+- npm run dev
 
 
 or
 
-npm start
+- npm start
 
 
 Server runs on the port defined in .env (default 8080).
 
-6️⃣ Navigate to frontend folder
-cd frontend
-npm install
+### 6️⃣ Navigate to frontend folder
+- cd frontend
+- npm install
 
-7️⃣ Start frontend application
-npm start
+### 7️⃣ Start frontend application
+- npm start
 
 
 Application runs at:
@@ -133,17 +109,13 @@ GET	/alerts	Retrieve alerts
 POST	/alerts	Create alert
 PUT	/alerts/:id	Update alert
 DELETE	/alerts/:id	Remove alert
-▶️ Usage
+## ▶️ Usage
+- Access backend API locally via http://localhost:8080
+- Login through frontend interface
+- Manage patients, alerts, and reminders
+- Monitor active alerts in real time
 
-Access backend API locally via http://localhost:8080
-
-Login through frontend interface
-
-Manage patients, alerts, and reminders
-
-Monitor active alerts in real time
-
-📝 Notes
+## 📝 Notes
 
 Intended primarily for local development and testing
 
