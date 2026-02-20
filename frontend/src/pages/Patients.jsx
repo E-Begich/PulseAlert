@@ -85,9 +85,6 @@ export default function Patients() {
     }
   };
 
-
-
-
   // Dodaj novog pacijenta
   const addPatient = async (e) => {
     e.preventDefault();
@@ -121,7 +118,7 @@ export default function Patients() {
   };
 
   const openEditModal = (patient) => {
-    setEditPatient({ ...patient }); // kopiramo podatke pacijenta
+    setEditPatient({ ...patient }); // ovdje se kopiraju podaci pacijenta
     setEditModal(true);
   };
 
@@ -202,8 +199,6 @@ export default function Patients() {
       alert("Greška prilikom brisanja pacijenata");
     }
   };
-
-
 
 
   return (
