@@ -15,7 +15,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
         bg-blue-900 text-white shadow-md
         transform transition-transform duration-300
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
-        md:translate-x-0 z-40 pt-20
+        md:translate-x-0 z-50 pt-20
       `}
     >
       {/* Logo */}
@@ -32,21 +32,31 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
         <NavItem to="/dashboard/patients" icon={<Users size={22} />} label="Pacijenti" />
 
         {isAdmin && (
-          <>
-            <NavItem to="/dashboard/users" icon={<Users size={22} />} label="Korisnici" />
-            <NavItem to="/dashboard/settings" icon={<Settings size={22} />} label="Postavke" />
-          </>
+          <NavItem to="/dashboard/users" icon={<Users size={22} />} label="Korisnici" />
         )}
 
         <NavItem to="/dashboard/invoices" icon={<FileText size={22} />} label="Računi" />
+
         <NavItem to="/dashboard/payments" icon={<CreditCard size={22} />} label="Uplate" />
+
         <NavItem to="/dashboard/reports" icon={<BarChart2 size={22} />} label="Izvještaji" />
       </nav>
 
+      {/* Postavke na dnu */}
+      {isAdmin && (
+        <div className="absolute bottom-0 left-0 w-full px-4 pb-4">
+          <NavItem
+            to="/dashboard/settings"
+            icon={<Settings size={22} />}
+            label="Postavke"
+          />
+        </div>
+      )}
+
       {/* Close button (mobile) */}
       <button
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 w-10 h-10 flex items-center justify-center
-                   text-white bg-blue-700 hover:bg-blue-600 rounded-full shadow-lg md:hidden"
+        className="absolute bottom-20 left-1/2 -translate-x-1/2 w-10 h-10 flex items-center justify-center
+             text-white bg-blue-700 hover:bg-blue-600 rounded-full shadow-lg z-50 md:hidden"
         onClick={toggleSidebar}
       >
         &times;
@@ -54,7 +64,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
     </aside>
   );
 }
-function NavItem({ to, icon, label, end = false}) {
+function NavItem({ to, icon, label, end = false }) {
   return (
     <NavLink
       to={to}
