@@ -25,6 +25,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
+    phone: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+      unique: true,
+    },
+    gender: {
+      type: DataTypes.ENUM('muško', 'žensko', 'ostalo'),
+      allowNull: false,
+    },
   }, {
     tableName: 'patient',
     timestamps: false,

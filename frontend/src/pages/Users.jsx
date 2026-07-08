@@ -105,6 +105,7 @@ export default function Users() {
                             <th className="px-4 py-2">Email</th>
                             <th className="px-4 py-2">Uloga</th>
                             <th className="px-4 py-2">Kreirano</th>
+                            <th className="px-4 py-2">Akcije</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -147,6 +148,29 @@ export default function Users() {
                                             : "-"}
                                     </td>
                                     <td className="px-4 py-2 flex gap-2">
+                                         {/* Pregledaj */}
+                                        <button
+                                            className="flex items-center gap-1 px-2 py-1 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                                        >
+                                            <Edit size={16} />
+                                            <span>Pregledaj</span>
+                                        </button>
+                                        {/* Uredi */}
+                                        <button
+                                            className="flex items-center gap-1 px-2 py-1 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                                        >
+                                            <Edit size={16} />
+                                            <span>Uredi</span>
+                                        </button>
+
+                                        {/* Gumb Obriši */}
+                                        <button
+                                            className="flex items-center gap-1 px-2 py-1 border rounded transition border-red-600 hover:bg-red-600 hover:text-white"
+                                        >
+                                            <Trash2 size={16} />
+                                            <span>Obriši</span>
+                                        </button>
+
                                     </td>
                                 </tr>
                             ))

@@ -360,8 +360,9 @@ export default function Patients() {
                 className="w-full px-3 py-2 border rounded"
               >
                 <option value="">Odaberi spol</option>
-                <option value="M">Muški</option>
-                <option value="Ž">Ženski</option>
+                <option value="muško">Muško</option>
+                <option value="žensko">Žensko</option>
+                <option value="ostalo">Ostalo</option>
               </select>
               <button
                 type="submit"
